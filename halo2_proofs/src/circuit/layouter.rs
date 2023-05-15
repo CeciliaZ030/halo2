@@ -220,8 +220,6 @@ impl<F: Field> RegionLayouter<F> for RegionShape {
         offset: usize,
     ) -> Result<(), Error> {
 
-        println!("selector annotation - {:?}", annotation());
-
         // Track the selector's fixed column as part of the region's shape.
         self.columns.insert((annotation(), *selector).into());
         self.row_count = cmp::max(self.row_count, offset + 1);

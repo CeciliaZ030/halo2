@@ -1461,10 +1461,10 @@ mod tests {
                         region.assign_advice(|| "a", config.a, 0, || Value::known(Fp::zero()))?;
 
                         // Name Column a
-                        region.name_column(|| "This is annotated!", &mut config.a);
+                        region.name_column(|| "This is annotated!", config.a);
 
                         // Name Column b
-                        region.name_column(|| "This is also annotated!", &mut config.b);
+                        region.name_column(|| "This is also annotated!", config.b);
 
                         // BUG: Forget to assign b = 0! This could go unnoticed during
                         // development, because cell values default to zero, which in this
@@ -1630,7 +1630,7 @@ mod tests {
                             || Value::known(Fp::from(5)),
                         )?;
 
-                        region.name_column(|| "Witness example", &mut config.a);
+                        region.name_column(|| "Witness example", config.a);
 
                         Ok(())
                     },
@@ -1773,7 +1773,7 @@ mod tests {
                             || Value::known(Fp::from(5)),
                         )?;
 
-                        region.name_column(|| "Witness example", &mut config.a);
+                        region.name_column(|| "Witness example", config.a);
 
                         Ok(())
                     },
@@ -1886,9 +1886,9 @@ mod tests {
                         region.assign_advice(|| "b", config.b, 0, || Value::known(Fp::zero()))?;
 
                         // Name Column a
-                        region.name_column(|| "This is Advice!", &mut config.a);
+                        region.name_column(|| "This is Advice!", config.a);
                         // Name Column b
-                        region.name_column(|| "This is Advice too!", &mut config.b);
+                        region.name_column(|| "This is Advice too!", config.b);
 
                         // Assign c = 5.
                         region.assign_advice(
@@ -1906,9 +1906,9 @@ mod tests {
                         )?;
 
                         // Name Column c
-                        region.name_column(|| "Another one!", &mut config.c);
+                        region.name_column(|| "Another one!", config.c);
                         // Name Column d
-                        region.name_column(|| "This is a Fixed!", &mut config.d);
+                        region.name_column(|| "This is a Fixed!", config.d);
 
                         // Note that none of the terms cancel eachother. Therefore we will have a constraint that is non satisfied for
                         // the `Equalty check` gate.

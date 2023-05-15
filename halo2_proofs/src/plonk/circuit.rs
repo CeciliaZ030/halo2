@@ -25,7 +25,6 @@ pub trait ColumnType:
 /// A column with an index and type
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub struct Column<C: ColumnType> {
-    name: Option<&'static str>,
     index: usize,
     column_type: C,
 }
@@ -34,7 +33,7 @@ pub struct Column<C: ColumnType> {
 impl<C: ColumnType> Column<C> {
     #[cfg(test)]
     pub(crate) fn new(index: usize, column_type: C) -> Self {
-        Column { name: None, index, column_type }
+        Column { index, column_type }
     }
 
     /// Index of this column.
@@ -48,26 +47,6 @@ impl<C: ColumnType> Column<C> {
     }
 
 }
-
-/// Named column for name_column
-pub trait Named {
-    /// Name of this column.
-    fn name(&self) -> Option<&str>;
-
-    /// Set name of this column.
-    fn set_name(&mut self, name: String );
-}
-
-impl<C: ColumnType> Named for Column<C> {
-    fn name(&self) -> Option<&str> {
-        self.name
-    }
-
-    fn set_name(&mut self, name: String ) {
-        self.name = Some(Box::leak(name.clone().into_boxed_str()));
-    }
-}
-
 
 impl<C: ColumnType> Ord for Column<C> {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
@@ -276,7 +255,6 @@ impl From<Instance> for Any {
 impl From<Column<Advice>> for Column<Any> {
     fn from(advice: Column<Advice>) -> Column<Any> {
         Column {
-            name: advice.name,
             index: advice.index(),
             column_type: Any::Advice(advice.column_type),
         }
@@ -286,7 +264,6 @@ impl From<Column<Advice>> for Column<Any> {
 impl From<Column<Fixed>> for Column<Any> {
     fn from(advice: Column<Fixed>) -> Column<Any> {
         Column {
-            name: advice.name,
             index: advice.index(),
             column_type: Any::Fixed,
         }
@@ -296,7 +273,6 @@ impl From<Column<Fixed>> for Column<Any> {
 impl From<Column<Instance>> for Column<Any> {
     fn from(advice: Column<Instance>) -> Column<Any> {
         Column {
-            name: advice.name,
             index: advice.index(),
             column_type: Any::Instance,
         }
@@ -310,7 +286,6 @@ impl TryFrom<Column<Any>> for Column<Advice> {
     fn try_from(any: Column<Any>) -> Result<Self, Self::Error> {
         match any.column_type() {
             Any::Advice(advice) => Ok(Column {
-                name: any.name,
                 index: any.index(),
                 column_type: *advice,
             }),
@@ -325,7 +300,6 @@ impl TryFrom<Column<Any>> for Column<Fixed> {
     fn try_from(any: Column<Any>) -> Result<Self, Self::Error> {
         match any.column_type() {
             Any::Fixed => Ok(Column {
-                name: any.name,
                 index: any.index(),
                 column_type: Fixed,
             }),
@@ -340,7 +314,6 @@ impl TryFrom<Column<Any>> for Column<Instance> {
     fn try_from(any: Column<Any>) -> Result<Self, Self::Error> {
         match any.column_type() {
             Any::Instance => Ok(Column {
-                name: any.name,
                 index: any.index(),
                 column_type: Instance,
             }),
@@ -1914,7 +1887,6 @@ impl<F: Field> ConstraintSystem<F> {
     /// Allocate a new fixed column
     pub fn fixed_column(&mut self) -> Column<Fixed> {
         let tmp = Column {
-            name: None,
             index: self.num_fixed_columns,
             column_type: Fixed,
         };
@@ -1938,7 +1910,6 @@ impl<F: Field> ConstraintSystem<F> {
         }
 
         let tmp = Column {
-            name: None,
             index: self.num_advice_columns,
             column_type: Advice { phase },
         };
@@ -1951,7 +1922,6 @@ impl<F: Field> ConstraintSystem<F> {
     /// Allocate a new instance column
     pub fn instance_column(&mut self) -> Column<Instance> {
         let tmp = Column {
-            name: None,
             index: self.num_instance_columns,
             column_type: Instance,
         };
