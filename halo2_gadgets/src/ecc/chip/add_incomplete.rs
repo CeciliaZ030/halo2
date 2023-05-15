@@ -87,7 +87,7 @@ impl Config {
         region: &mut Region<'_, pallas::Base>,
     ) -> Result<NonIdentityEccPoint, Error> {
         // Enable `q_add_incomplete` selector
-        self.q_add_incomplete.enable(region, offset)?;
+        self.q_add_incomplete.enable(region, "", offset)?;
 
         // Handle exceptional cases
         let (x_p, y_p) = (p.x.value(), p.y.value());

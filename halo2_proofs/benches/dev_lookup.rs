@@ -75,7 +75,7 @@ fn criterion_benchmark(c: &mut Criterion) {
                 || "assign values",
                 |mut region| {
                     for offset in 0u64..(1 << 10) {
-                        config.selector.enable(&mut region, offset as usize)?;
+                        config.selector.enable(&mut region, "",  offset as usize)?;
                         region.assign_advice(
                             || format!("offset {}", offset),
                             config.advice,

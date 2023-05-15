@@ -51,7 +51,7 @@ where
         // selector.
         let mut y_a: Y<pallas::Base> = {
             // Enable `q_sinsemilla4` on the first row.
-            config.q_sinsemilla4.enable(region, offset)?;
+            config.q_sinsemilla4.enable(region, "", offset)?;
             region.assign_fixed(
                 || "fixed y_q",
                 config.fixed_y_q,
@@ -201,7 +201,7 @@ where
         {
             // Enable `q_sinsemilla1` selector on every row.
             for row in 0..piece.num_words() {
-                config.q_sinsemilla1.enable(region, offset + row)?;
+                config.q_sinsemilla1.enable(region, "", offset + row)?;
             }
 
             // Set `q_sinsemilla2` fixed column to 1 on every row but the last.

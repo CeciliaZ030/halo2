@@ -161,7 +161,7 @@ impl<F: FieldExt + PrimeFieldBits, const WINDOW_NUM_BITS: usize>
 
         // Enable selectors
         for idx in 0..num_windows {
-            self.q_range_check.enable(region, offset + idx)?;
+            self.q_range_check.enable(region, "", offset + idx)?;
         }
 
         // Decompose base field element into K-bit words.

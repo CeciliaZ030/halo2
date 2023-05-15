@@ -261,9 +261,9 @@ impl<F: FieldExt + PrimeFieldBits, const K: usize> LookupRangeCheckConfig<F, K> 
         let inv_two_pow_k = F::from(1u64 << K).invert().unwrap();
         for (idx, word) in words.iter().enumerate() {
             // Enable q_lookup on this row
-            self.q_lookup.enable(region, idx)?;
+            self.q_lookup.enable(region, "", idx)?;
             // Enable q_running on this row
-            self.q_running.enable(region, idx)?;
+            self.q_running.enable(region, "", idx)?;
 
             // z_next = (z_cur - m_cur) / 2^K
             z = {
@@ -351,13 +351,13 @@ impl<F: FieldExt + PrimeFieldBits, const K: usize> LookupRangeCheckConfig<F, K> 
         num_bits: usize,
     ) -> Result<(), Error> {
         // Enable lookup for `element`, to constrain it to 10 bits.
-        self.q_lookup.enable(region, 0)?;
+        self.q_lookup.enable(region, "", 0)?;
 
         // Enable lookup for shifted element, to constrain it to 10 bits.
-        self.q_lookup.enable(region, 1)?;
+        self.q_lookup.enable(region, "", 1)?;
 
         // Check element has been shifted by the correct number of bits.
-        self.q_bitshift.enable(region, 1)?;
+        self.q_bitshift.enable(region, "", 1)?;
 
         // Assign shifted `element * 2^{K - num_bits}`
         let shifted = element.value().into_field() * F::from(1 << (K - num_bits));

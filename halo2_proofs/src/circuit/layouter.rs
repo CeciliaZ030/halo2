@@ -55,7 +55,7 @@ pub trait RegionLayouter<F: Field>: fmt::Debug {
     fn name_column<'v>(
         &'v mut self,
         annotation: &'v (dyn Fn() -> String + 'v),
-        column: &mut Column<Any>,
+        column: Column<Any>,
     );
 
     /// Assign an advice column value (witness)
@@ -297,10 +297,10 @@ impl<F: Field> RegionLayouter<F> for RegionShape {
     fn name_column<'v>(
         &'v mut self,
         annotation: &'v (dyn Fn() -> String + 'v),
-        column: &mut Column<Any>,
+        column: Column<Any>,
     ) {
-        column.set_name(annotation());
-        print!("column.set_name(annotation()) - {:?}", annotation());
+        // column.set_name(annotation());
+        // print!("column.set_name(annotation()) - {:?}", annotation());
     }
 
     fn constrain_constant(&mut self, _cell: Cell, _constant: Assigned<F>) -> Result<(), Error> {

@@ -105,7 +105,7 @@ impl Config {
             // Check scalar decomposition for each iteration. Since the gate enabled by
             // `q_mul_decompose_var` queries the previous row, we enable the selector on
             // `row + offset + 1` (instead of `row + offset`).
-            self.q_mul_decompose_var.enable(region, row + offset + 1)?;
+            self.q_mul_decompose_var.enable(region, "", row + offset + 1)?;
         }
 
         // Use x_a, y_a output from incomplete addition

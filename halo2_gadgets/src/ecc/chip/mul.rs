@@ -330,7 +330,7 @@ impl Config {
         lsb: Value<bool>,
     ) -> Result<(EccPoint, Z<pallas::Base>), Error> {
         // Enforce switching logic on LSB using a custom gate
-        self.q_mul_lsb.enable(region, offset)?;
+        self.q_mul_lsb.enable(region, "", offset)?;
 
         // z_1 has been assigned at (z_complete, offset).
         // Assign z_0 = 2⋅z_1 + k_0

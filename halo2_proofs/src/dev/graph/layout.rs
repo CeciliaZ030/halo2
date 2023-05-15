@@ -10,7 +10,8 @@ use std::ops::Range;
 use crate::{
     circuit::{layouter::RegionColumn, Value},
     plonk::{
-        Advice, Any, Assigned, Assignment, Challenge, Circuit, Column, ConstraintSystem, Error,
+        Advice, Any, Assigned, Assignment, Challenge, Circuit, Column, ConstraintSystem, Error, 
+        Named,
         Fixed, FloorPlanner, Instance, Selector,
     },
 };

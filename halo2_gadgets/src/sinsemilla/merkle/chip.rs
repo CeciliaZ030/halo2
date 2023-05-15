@@ -323,7 +323,7 @@ where
                     // Set the fixed column `l` to the current l.
                     // Recall that l = MERKLE_DEPTH - layer - 1.
                     // The layer with 2^n nodes is called "layer n".
-                    config.q_decompose.enable(&mut region, 0)?;
+                    config.q_decompose.enable(&mut region, "",  0)?;
                     region.assign_advice_from_constant(
                         || format!("l {}", l),
                         config.advices[4],

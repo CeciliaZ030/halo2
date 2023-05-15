@@ -81,7 +81,7 @@ impl<F: FieldExt> CondSwapInstructions<F> for CondSwapChip<F> {
             || "swap",
             |mut region| {
                 // Enable `q_swap` selector
-                config.q_swap.enable(&mut region, 0)?;
+                config.q_swap.enable(&mut region, "",  0)?;
 
                 // Copy in `a` value
                 let a = pair.0.copy_advice(|| "copy a", &mut region, config.a, 0)?;

@@ -252,16 +252,16 @@ impl<const NUM_BITS: usize> Config<NUM_BITS> {
         // Set q_mul values
         {
             // q_mul_1 = 1 on offset 0
-            self.q_mul_1.enable(region, offset)?;
+            self.q_mul_1.enable(region, "", offset)?;
 
             let offset = offset + 1;
             // q_mul_2 = 1 on all rows after offset 0, excluding the last row.
             for idx in 0..(NUM_BITS - 1) {
-                self.q_mul_2.enable(region, offset + idx)?;
+                self.q_mul_2.enable(region, "", offset + idx)?;
             }
 
             // q_mul_3 = 1 on the last row.
-            self.q_mul_3.enable(region, offset + NUM_BITS - 1)?;
+            self.q_mul_3.enable(region, "", offset + NUM_BITS - 1)?;
         }
 
         // Initialise double-and-add

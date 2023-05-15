@@ -323,7 +323,7 @@ impl<
         layouter.assign_region(
             || format!("add input for domain {}", D::name()),
             |mut region| {
-                config.s_pad_and_add.enable(&mut region, 1)?;
+                config.s_pad_and_add.enable(&mut region, "",  1)?;
 
                 // Load the initial state into this region.
                 let load_state_word = |i: usize| {
@@ -558,7 +558,7 @@ impl<F: FieldExt, const WIDTH: usize> Pow5State<F, WIDTH> {
         round_fn: impl FnOnce(&mut Region<F>) -> Result<(usize, [Value<F>; WIDTH]), Error>,
     ) -> Result<Self, Error> {
         // Enable the required gate.
-        round_gate.enable(region, offset)?;
+        round_gate.enable(region, "", offset)?;
 
         // Load the round constants.
         let mut load_round_constant = |i: usize| {

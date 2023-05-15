@@ -231,7 +231,7 @@ impl<F: Group + Field> Mul<F> for Value<F> {
 ///
 ///     fn synthesize(&self, config: MyConfig, mut layouter: impl Layouter<F>) -> Result<(), Error> {
 ///         layouter.assign_region(|| "Example region", |mut region| {
-///             config.s.enable(&mut region, "", 0)?;
+///             config.s.enable(&mut region, "",  0)?;
 ///             region.assign_advice(|| "a", config.a, 0, || {
 ///                 self.a.map(F::from)
 ///             })?;
@@ -1448,23 +1448,23 @@ mod tests {
 
             fn synthesize(
                 &self,
-                config: Self::Config,
+                mut config: Self::Config,
                 mut layouter: impl Layouter<Fp>,
             ) -> Result<(), Error> {
                 layouter.assign_region(
                     || "Faulty synthesis",
                     |mut region| {
                         // Enable the equality gate.
-                        config.q.enable(&mut region, "", 1)?;
+                        config.q.enable(&mut region, "",  1)?;
 
                         // Assign a = 0.
                         region.assign_advice(|| "a", config.a, 0, || Value::known(Fp::zero()))?;
 
                         // Name Column a
-                        region.name_column(|| "This is annotated!", config.a);
+                        region.name_column(|| "This is annotated!", &mut config.a);
 
                         // Name Column b
-                        region.name_column(|| "This is also annotated!", config.b);
+                        region.name_column(|| "This is also annotated!", &mut config.b);
 
                         // BUG: Forget to assign b = 0! This could go unnoticed during
                         // development, because cell values default to zero, which in this
@@ -1555,7 +1555,7 @@ mod tests {
 
             fn synthesize(
                 &self,
-                config: Self::Config,
+                mut config: Self::Config,
                 mut layouter: impl Layouter<Fp>,
             ) -> Result<(), Error> {
                 // No assignment needed for the table as is an Instance Column.
@@ -1564,8 +1564,8 @@ mod tests {
                     || "Good synthesis",
                     |mut region| {
                         // Enable the lookup on rows 0 and 1.
-                        config.q.enable(&mut region, "", 0)?;
-                        config.q.enable(&mut region, "", 1)?;
+                        config.q.enable(&mut region, "",  0)?;
+                        config.q.enable(&mut region, "",  1)?;
 
                         for i in 0..4 {
                             // Load Advice lookup table with Instance lookup table values.
@@ -1600,8 +1600,8 @@ mod tests {
                     || "Faulty synthesis",
                     |mut region| {
                         // Enable the lookup on rows 0 and 1.
-                        config.q.enable(&mut region, "", 0)?;
-                        config.q.enable(&mut region, "", 1)?;
+                        config.q.enable(&mut region, "",  0)?;
+                        config.q.enable(&mut region, "",  1)?;
 
                         for i in 0..4 {
                             // Load Advice lookup table with Instance lookup table values.
@@ -1630,7 +1630,7 @@ mod tests {
                             || Value::known(Fp::from(5)),
                         )?;
 
-                        region.name_column(|| "Witness example", config.a);
+                        region.name_column(|| "Witness example", &mut config.a);
 
                         Ok(())
                     },
@@ -1706,7 +1706,7 @@ mod tests {
 
             fn synthesize(
                 &self,
-                config: Self::Config,
+                mut config: Self::Config,
                 mut layouter: impl Layouter<Fp>,
             ) -> Result<(), Error> {
                 layouter.assign_table(
@@ -1729,8 +1729,8 @@ mod tests {
                     || "Good synthesis",
                     |mut region| {
                         // Enable the lookup on rows 0 and 1.
-                        config.q.enable(&mut region, "", 0)?;
-                        config.q.enable(&mut region, "", 1)?;
+                        config.q.enable(&mut region, "",  0)?;
+                        config.q.enable(&mut region, "",  1)?;
 
                         // Assign a = 2 and a = 6.
                         region.assign_advice(
@@ -1754,8 +1754,8 @@ mod tests {
                     || "Faulty synthesis",
                     |mut region| {
                         // Enable the lookup on rows 0 and 1.
-                        config.q.enable(&mut region, "", 0)?;
-                        config.q.enable(&mut region, "", 1)?;
+                        config.q.enable(&mut region, "",  0)?;
+                        config.q.enable(&mut region, "",  1)?;
 
                         // Assign a = 4.
                         region.assign_advice(
@@ -1773,7 +1773,7 @@ mod tests {
                             || Value::known(Fp::from(5)),
                         )?;
 
-                        region.name_column(|| "Witness example", config.a);
+                        region.name_column(|| "Witness example", &mut config.a);
 
                         Ok(())
                     },
@@ -1841,7 +1841,7 @@ mod tests {
 
             fn synthesize(
                 &self,
-                config: Self::Config,
+                mut config: Self::Config,
                 mut layouter: impl Layouter<Fp>,
             ) -> Result<(), Error> {
                 layouter.assign_region(
@@ -1877,7 +1877,7 @@ mod tests {
                     || "Wrong synthesis",
                     |mut region| {
                         // Enable the equality gate.
-                        config.q.enable(&mut region, "", 0)?;
+                        config.q.enable(&mut region,  "", 0)?;
 
                         // Assign a = 1.
                         region.assign_advice(|| "a", config.a, 0, || Value::known(Fp::one()))?;
@@ -1886,9 +1886,9 @@ mod tests {
                         region.assign_advice(|| "b", config.b, 0, || Value::known(Fp::zero()))?;
 
                         // Name Column a
-                        region.name_column(|| "This is Advice!", config.a);
+                        region.name_column(|| "This is Advice!", &mut config.a);
                         // Name Column b
-                        region.name_column(|| "This is Advice too!", config.b);
+                        region.name_column(|| "This is Advice too!", &mut config.b);
 
                         // Assign c = 5.
                         region.assign_advice(
@@ -1906,9 +1906,9 @@ mod tests {
                         )?;
 
                         // Name Column c
-                        region.name_column(|| "Another one!", config.c);
+                        region.name_column(|| "Another one!", &mut config.c);
                         // Name Column d
-                        region.name_column(|| "This is a Fixed!", config.d);
+                        region.name_column(|| "This is a Fixed!", &mut config.d);
 
                         // Note that none of the terms cancel eachother. Therefore we will have a constraint that is non satisfied for
                         // the `Equalty check` gate.

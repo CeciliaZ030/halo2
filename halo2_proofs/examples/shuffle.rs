@@ -159,10 +159,10 @@ impl<F: FieldExt, const W: usize, const H: usize> Circuit<F> for MyCircuit<F, W,
             || "Shuffle original into shuffled",
             |mut region| {
                 // Keygen
-                config.q_first.enable(&mut region, 0)?;
-                config.q_last.enable(&mut region, H)?;
+                config.q_first.enable(&mut region, "",  0)?;
+                config.q_last.enable(&mut region, "",  H)?;
                 for offset in 0..H {
-                    config.q_shuffle.enable(&mut region, offset)?;
+                    config.q_shuffle.enable(&mut region, "",  offset)?;
                 }
 
                 // First phase

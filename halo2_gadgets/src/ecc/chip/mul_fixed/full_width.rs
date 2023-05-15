@@ -80,7 +80,7 @@ impl<Fixed: FixedPoints<pallas::Affine>> Config<Fixed> {
     ) -> Result<ArrayVec<AssignedCell<pallas::Base, pallas::Base>, NUM_WINDOWS>, Error> {
         // Enable `q_mul_fixed_full` selector
         for idx in 0..NUM_WINDOWS {
-            self.q_mul_fixed_full.enable(region, offset + idx)?;
+            self.q_mul_fixed_full.enable(region, "", offset + idx)?;
         }
 
         // Decompose scalar into `k-bit` windows

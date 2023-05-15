@@ -205,7 +205,7 @@ impl CompressionConfig {
         row: usize,
         val: Value<u32>,
     ) -> Result<AbcdVar, Error> {
-        self.s_decompose_abcd.enable(region, row)?;
+        self.s_decompose_abcd.enable(region, "", row)?;
 
         let a_3 = self.extras[0];
         let a_4 = self.extras[1];
@@ -276,7 +276,7 @@ impl CompressionConfig {
         row: usize,
         val: Value<u32>,
     ) -> Result<EfghVar, Error> {
-        self.s_decompose_efgh.enable(region, row)?;
+        self.s_decompose_efgh.enable(region, "", row)?;
 
         let a_3 = self.extras[0];
         let a_4 = self.extras[1];
@@ -380,7 +380,7 @@ impl CompressionConfig {
 
         let row = get_upper_sigma_0_row(round_idx);
 
-        self.s_upper_sigma_0.enable(region, row)?;
+        self.s_upper_sigma_0.enable(region, "", row)?;
 
         // Assign `spread_a` and copy constraint
         word.a
@@ -438,7 +438,7 @@ impl CompressionConfig {
 
         let row = get_upper_sigma_1_row(round_idx);
 
-        self.s_upper_sigma_1.enable(region, row)?;
+        self.s_upper_sigma_1.enable(region, "", row)?;
 
         // Assign `spread_a_lo` and copy constraint
         word.a_lo
@@ -521,7 +521,7 @@ impl CompressionConfig {
 
         let row = get_ch_row(round_idx);
 
-        self.s_ch.enable(region, row)?;
+        self.s_ch.enable(region, "", row)?;
 
         // Assign and copy spread_e_lo, spread_e_hi
         spread_halves_e
@@ -564,7 +564,7 @@ impl CompressionConfig {
     ) -> Result<(AssignedBits<16>, AssignedBits<16>), Error> {
         let row = get_ch_neg_row(round_idx);
 
-        self.s_ch_neg.enable(region, row)?;
+        self.s_ch_neg.enable(region, "", row)?;
 
         let a_3 = self.extras[0];
         let a_4 = self.extras[1];
@@ -671,7 +671,7 @@ impl CompressionConfig {
 
         let row = get_maj_row(round_idx);
 
-        self.s_maj.enable(region, row)?;
+        self.s_maj.enable(region, "", row)?;
 
         // Assign and copy spread_a_lo, spread_a_hi
         spread_halves_a
@@ -728,7 +728,7 @@ impl CompressionConfig {
         w: &(AssignedBits<16>, AssignedBits<16>),
     ) -> Result<RoundWordDense, Error> {
         let row = get_h_prime_row(round_idx);
-        self.s_h_prime.enable(region, row)?;
+        self.s_h_prime.enable(region, "", row)?;
 
         let a_4 = self.extras[1];
         let a_5 = self.message_schedule;
@@ -809,7 +809,7 @@ impl CompressionConfig {
     ) -> Result<RoundWordDense, Error> {
         let row = get_e_new_row(round_idx);
 
-        self.s_e_new.enable(region, row)?;
+        self.s_e_new.enable(region, "", row)?;
 
         let a_7 = self.extras[3];
         let a_8 = self.extras[4];
@@ -847,7 +847,7 @@ impl CompressionConfig {
     ) -> Result<RoundWordDense, Error> {
         let row = get_a_new_row(round_idx);
 
-        self.s_a_new.enable(region, row)?;
+        self.s_a_new.enable(region, "", row)?;
 
         let a_3 = self.extras[0];
         let a_6 = self.extras[2];

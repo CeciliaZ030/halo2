@@ -38,11 +38,6 @@ impl<C: ColumnType> Column<C> {
     }
 
     /// Index of this column.
-    pub fn name(&self) -> Option<&str> {
-        self.name
-    }
-
-    /// Index of this column.
     pub fn index(&self) -> usize {
         self.index
     }
@@ -52,10 +47,27 @@ impl<C: ColumnType> Column<C> {
         &self.column_type
     }
 
-    pub fn set_name(&mut self, name: String ) {
+}
+
+/// Named column for name_column
+pub trait Named {
+    /// Name of this column.
+    fn name(&self) -> Option<&str>;
+
+    /// Set name of this column.
+    fn set_name(&mut self, name: String );
+}
+
+impl<C: ColumnType> Named for Column<C> {
+    fn name(&self) -> Option<&str> {
+        self.name
+    }
+
+    fn set_name(&mut self, name: String ) {
         self.name = Some(Box::leak(name.clone().into_boxed_str()));
     }
 }
+
 
 impl<C: ColumnType> Ord for Column<C> {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
@@ -384,7 +396,7 @@ impl TryFrom<Column<Any>> for Column<Instance> {
 ///     layouter.assign_region(|| "bar", |mut region| {
 ///         region.assign_advice(|| "a", config.a, 0, || Value::known(F::one()))?;
 ///         region.assign_advice(|| "a", config.b, 1, || Value::known(F::one()))?;
-///         config.s.enable(&mut region, "", 1)
+///         config.s.enable(&mut region, "",  1)
 ///     })?;
 ///     Ok(())
 /// }

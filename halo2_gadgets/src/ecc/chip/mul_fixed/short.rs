@@ -184,7 +184,7 @@ impl<Fixed: FixedPoints<pallas::Affine>> Config<Fixed> {
                 });
 
                 // Enable mul_fixed_short selector on final row
-                self.q_mul_fixed_short.enable(&mut region, offset)?;
+                self.q_mul_fixed_short.enable(&mut region, "",  offset)?;
 
                 // Assign final `y` to `y_p` column and return final point
                 let y_var = region.assign_advice(

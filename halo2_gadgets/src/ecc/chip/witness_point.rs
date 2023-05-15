@@ -110,7 +110,7 @@ impl Config {
         region: &mut Region<'_, pallas::Base>,
     ) -> Result<EccPoint, Error> {
         // Enable `q_point` selector
-        self.q_point.enable(region, offset)?;
+        self.q_point.enable(region, "", offset)?;
 
         let value = value.map(|value| {
             // Map the identity to (0, 0).
@@ -134,7 +134,7 @@ impl Config {
         region: &mut Region<'_, pallas::Base>,
     ) -> Result<NonIdentityEccPoint, Error> {
         // Enable `q_point_non_id` selector
-        self.q_point_non_id.enable(region, offset)?;
+        self.q_point_non_id.enable(region, "", offset)?;
 
         // Return an error if the point is the identity.
         value.error_if_known_and(|value| value == &pallas::Affine::identity())?;

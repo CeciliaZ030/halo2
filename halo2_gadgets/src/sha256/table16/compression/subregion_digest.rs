@@ -23,9 +23,9 @@ impl CompressionConfig {
         let (a, b, c, d, e, f, g, h) = match_state(state);
 
         let abcd_row = 0;
-        self.s_digest.enable(region, abcd_row)?;
+        self.s_digest.enable(region, "", abcd_row)?;
         let efgh_row = abcd_row + 2;
-        self.s_digest.enable(region, efgh_row)?;
+        self.s_digest.enable(region, "", efgh_row)?;
 
         // Assign digest for A, B, C, D
         a.dense_halves

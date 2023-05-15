@@ -138,7 +138,7 @@ impl Config {
                 let offset = 0;
 
                 // Enable overflow check gate
-                self.q_mul_overflow.enable(&mut region, offset + 1)?;
+                self.q_mul_overflow.enable(&mut region, "",  offset + 1)?;
 
                 // Copy `z_0`
                 zs[0].copy_advice(|| "copy z_0", &mut region, self.advices[0], offset)?;

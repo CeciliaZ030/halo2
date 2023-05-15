@@ -287,7 +287,7 @@ impl<Fixed: FixedPoints<pallas::Affine>> Config<Fixed> {
             || "Canonicity checks",
             |mut region| {
                 // Activate canonicity check gate
-                self.q_mul_fixed_base_field.enable(&mut region, 1)?;
+                self.q_mul_fixed_base_field.enable(&mut region, "",  1)?;
 
                 // Offset 0
                 {

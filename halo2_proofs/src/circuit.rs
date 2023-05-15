@@ -7,7 +7,7 @@ use ff::Field;
 use crate::{
     arithmetic::FieldExt,
     plonk::{
-        Advice, Any, Assigned, Challenge, Column, Error, Fixed, Instance, Selector, TableColumn,
+        Advice, Any, Assigned, Challenge, Column, Error, Fixed, Instance, Selector, TableColumn, Named,
     },
 };
 
@@ -214,11 +214,11 @@ impl<'r, F: Field> Region<'r, F> {
     where
         A: Fn() -> AR,
         AR: Into<String>,
-        T: Into<Column<Any>>,
+        T: Into<Column<Any>> + Named + Clone,
     {
         column.set_name(annotation().into());
         self.region
-            .name_column(&|| annotation().into(), column.into());
+            .name_column(&|| annotation().into(), column.clone().into());
     }
 
     /// Assign an advice column value (witness).

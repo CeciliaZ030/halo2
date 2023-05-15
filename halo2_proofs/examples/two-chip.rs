@@ -206,7 +206,7 @@ impl<F: FieldExt> AddInstructions<F> for AddChip<F> {
                 // We only want to use a single addition gate in this region,
                 // so we enable it at region offset 0; this means it will constrain
                 // cells at offsets 0 and 1.
-                config.s_add.enable(&mut region, 0)?;
+                config.s_add.enable(&mut region, "",  0)?;
 
                 // The inputs we've been given could be located anywhere in the circuit,
                 // but we can only rely on relative offsets inside this region. So we
@@ -327,7 +327,7 @@ impl<F: FieldExt> MulInstructions<F> for MulChip<F> {
                 // We only want to use a single multiplication gate in this region,
                 // so we enable it at region offset 0; this means it will constrain
                 // cells at offsets 0 and 1.
-                config.s_mul.enable(&mut region, 0)?;
+                config.s_mul.enable(&mut region, "",  0)?;
 
                 // The inputs we've been given could be located anywhere in the circuit,
                 // but we can only rely on relative offsets inside this region. So we

@@ -298,7 +298,7 @@ mod tests {
                 layouter.assign_region(
                     || "range constrain",
                     |mut region| {
-                        config.selector.enable(&mut region, 0)?;
+                        config.selector.enable(&mut region, "",  0)?;
                         region.assign_advice(
                             || format!("witness {}", self.0),
                             config.advice,

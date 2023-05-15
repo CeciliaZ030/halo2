@@ -213,7 +213,7 @@ impl Config {
         region: &mut Region<'_, pallas::Base>,
     ) -> Result<EccPoint, Error> {
         // Enable `q_add` selector
-        self.q_add.enable(region, offset)?;
+        self.q_add.enable(region, "", offset)?;
 
         // Copy point `p` into `x_p`, `y_p` columns
         p.x.copy_advice(|| "x_p", region, self.x_p, offset)?;
