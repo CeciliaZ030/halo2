@@ -11,7 +11,6 @@ use crate::{
     circuit::{layouter::RegionColumn, Value},
     plonk::{
         Advice, Any, Assigned, Assignment, Challenge, Circuit, Column, ConstraintSystem, Error, 
-        Named,
         Fixed, FloorPlanner, Instance, Selector,
     },
 };
@@ -128,7 +127,7 @@ impl CircuitLayout {
         let total_columns = cs.num_instance_columns + cs.num_advice_columns + cs.num_fixed_columns;
         let column_index = |cs: &ConstraintSystem<F>, column: RegionColumn| {
             let column: Column<Any> = match column {
-                RegionColumn::Column(col) => col,
+                RegionColumn::Column(_, col) => col,
                 RegionColumn::Selector(_, selector) => cs.selector_map[selector.0].into(),
             };
             column.index()
@@ -248,7 +247,7 @@ impl CircuitLayout {
                 for column in columns {
                     println!("RegionColumn {:?}", column);
                     let column_name = match column {
-                        RegionColumn::Column(c) => c.name().map_or("", |s| s).to_owned(),
+                        RegionColumn::Column(name, c) => name.to_owned(),
                         RegionColumn::Selector(name, s) => name.to_owned(),
                     };
                     let column = column_index(&cs, column);
@@ -334,7 +333,7 @@ impl CircuitLayout {
             }, 
             n, 
             total_columns
-        );
+        )?;
 
         // Render labels last, on top of everything else.
         if let Some(labels) = labels {
@@ -547,17 +546,13 @@ impl<F: Field> Assignment<F> for Layout {
         if let Some(region) = self.current_region {
             let region =  &mut self.regions[region];
 
-            let before: RegionColumn = column.clone().into();
-            let res = region.columns.remove(&before);
-            // assert!(res);
-            println!("~~~ layout.annotate_column {:?} \n {:?}", before, region.columns);
-
-            column.set_name(annotation().into());
-            let after = column.clone().into();
-            println!("  {:?}", after);
-
-
-            region.columns.insert(after);
+            let mut region_column: RegionColumn = column.clone().into();
+            region.columns.remove(&region_column);
+            println!("~~~ layout.annotate_column {:?} \n {:?}", region_column, region.columns);
+            if let RegionColumn::Column(name, _) = &mut region_column {
+                *name = Box::leak(annotation().into().into_boxed_str());                
+            }
+            region.columns.insert(region_column);
         }
     }
 

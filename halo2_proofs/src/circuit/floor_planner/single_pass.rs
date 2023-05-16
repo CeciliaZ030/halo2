@@ -88,6 +88,8 @@ impl<'a, F: Field, CS: Assignment<F> + 'a> Layouter<F> for SingleChipLayouter<'a
         let mut shape = RegionShape::new(region_index.into());
         {
             let region: &mut dyn RegionLayouter<F> = &mut shape;
+            // Todo(Cecilia): profile this for every assign_region() call, and hardcode the shape
+            // 跑两遍所有closure不慢才怪
             assignment(region.into())?;
         }
 

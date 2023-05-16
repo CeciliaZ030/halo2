@@ -146,16 +146,23 @@ pub struct RegionShape {
 #[derive(Eq, PartialEq, Copy, Clone, Debug, Hash)]
 pub enum RegionColumn {
     /// Concrete column
-    Column(Column<Any>),
+    Column(&'static str, Column<Any>),
     /// Virtual column representing a (boolean) selector
     Selector(&'static str, Selector),
 }
 
 impl From<Column<Any>> for RegionColumn {
     fn from(column: Column<Any>) -> RegionColumn {
-        RegionColumn::Column(column)
+        RegionColumn::Column("", column)
     }
 }
+
+impl From<(String, Column<Any>)> for RegionColumn {
+    fn from(name_column: (String, Column<Any>)) -> RegionColumn {
+        RegionColumn::Column(Box::leak(name_column.0.into_boxed_str()), name_column.1)
+    }
+}
+
 
 impl From<Selector> for RegionColumn {
     fn from(selector: Selector) -> RegionColumn {
@@ -172,10 +179,10 @@ impl From<(String, Selector)> for RegionColumn {
 impl Ord for RegionColumn {
     fn cmp(&self, other: &Self) -> cmp::Ordering {
         match (self, other) {
-            (Self::Column(ref a), Self::Column(ref b)) => a.cmp(b),
+            (Self::Column(s_a, ref a), Self::Column(s_b, ref b)) => a.cmp(b),
             (Self::Selector(s_a, ref a), Self::Selector(s_b, ref b)) => a.0.cmp(&b.0),
-            (Self::Column(_), Self::Selector(_, _)) => cmp::Ordering::Less,
-            (Self::Selector(_, _), Self::Column(_)) => cmp::Ordering::Greater,
+            (Self::Column(_, _), Self::Selector(_, _)) => cmp::Ordering::Less,
+            (Self::Selector(_, _), Self::Column(_, _)) => cmp::Ordering::Greater,
         }
     }
 }
